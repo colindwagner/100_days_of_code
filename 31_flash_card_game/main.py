@@ -12,7 +12,7 @@ try:
     es_csv = pd.read_csv("./data/words_to_learn.csv")
 except FileNotFoundError:
     es_csv = pd.read_csv("./data/es.csv")
-else:
+finally:
     to_learn = es_csv.to_dict(orient="records")
 
 
