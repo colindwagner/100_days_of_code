@@ -1,4 +1,3 @@
-from cgitb import text
 from tkinter import *
 import random
 import pandas as pd
