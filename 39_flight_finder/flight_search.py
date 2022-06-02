@@ -1,7 +1,12 @@
 from flight_data import FlightData
 import requests 
+import os
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+
 TEQUILA_ENDPOINT = "https://tequila-api.kiwi.com"
-TEQUILA_API_KEY = 'apikey'
+TEQUILA_API_KEY = os.environ["TEQUILA_API_KEY"]
 
 
 class FlightSearch:
@@ -10,7 +15,7 @@ class FlightSearch:
         location_endpoint = f"{TEQUILA_ENDPOINT}/locations/query"
         headers = {"apikey": TEQUILA_API_KEY}
         query = {"term": city_name, "location_types": "city"}
-        response = requests.get(url=location_endpoint, headers=headers, params=query)
+        response = requests.get(url=location_endpoint, headers=headers, params=query, verify=False)
         results = response.json()["locations"]
         code = results[0]["code"]
         return code
@@ -33,10 +38,11 @@ class FlightSearch:
         response = requests.get(
             url=f"{TEQUILA_ENDPOINT}/v2/search",
             headers=headers,
-            params=query,
+            params=query, verify=False
         )
 
         try:
+            print(response)
             data = response.json()["data"][0]
         except IndexError:
             print(f"No flights found for {destination_city_code}.")
